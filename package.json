@@ -1,0 +1,24 @@
+{
+  "name": "number-guess-nodejs",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "guess",
+    "random",
+    "number"
+  ],
+  "author": "Herman Connor",
+  "license": "MIT",
+  "description": "A CLI number guessing game in NodeJS",
+  "dependencies": {
+    "chalk": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
