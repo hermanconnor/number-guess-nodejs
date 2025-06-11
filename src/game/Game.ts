@@ -3,6 +3,7 @@ import { stdin as input, stdout as output } from 'node:process';
 import chalk from 'chalk';
 import { GameConfig, GameState } from '../interfaces/gameInterfaces';
 import { Difficulty } from './difficulty';
+import { getRandomNumber } from '../utils/random';
 
 export class Game {
   private rl: readline.Interface;
@@ -19,7 +20,7 @@ export class Game {
   }
 
   private displayWelcomeMessage(): void {
-    console.log(chalk.blueBright('Welcome to the Number Guessing Game!'));
+    console.log(chalk.blueBright('Welcome to the Number Guessing Game!\n'));
     console.log("I'm thinking of a number between 1 and 100.");
     console.log(
       'You have a limited number of chances to guess the correct number.',
@@ -76,7 +77,9 @@ export class Game {
       break; // Valid choice, exit the loop
     }
 
-    console.log(`You have ${config.maxChances} to guess the correct number.`);
+    console.log(
+      `You have ${config.maxChances} chances to guess the correct number.`,
+    );
     console.log("Let's start the game!");
 
     return config;
@@ -103,7 +106,7 @@ export class Game {
   private endGame(won: boolean): void {
     this.rl.close();
 
-    console.log(chalk.blueBright('\nThanks for playing!'));
+    console.log(chalk.blueBright('Thanks for playing!\n'));
 
     if (won) {
       process.exit(0);
@@ -127,7 +130,9 @@ export class Game {
 
     if (guess === this.state.secretNumber) {
       console.log(
-        `\n🎉 Congratulations! You guessed the number in ${this.state.attempts} attempt(s).`,
+        chalk.greenBright(
+          `\n🎉 Congratulations! You guessed the number in ${this.state.attempts} attempt(s).`,
+        ),
       );
 
       this.endGame(true);
@@ -165,6 +170,23 @@ export class Game {
       }
 
       return false;
+    }
+  }
+
+  public async startGame(): Promise<void> {
+    this.displayWelcomeMessage();
+    const config = await this.selectDifficulty();
+
+    this.state.maxChances = config.maxChances;
+    this.state.hintThreshold = config.hintThreshold;
+    this.state.secretNumber = getRandomNumber(1, 100);
+
+    while (this.state.attempts < this.state.maxChances) {
+      const gameEnded = await this.askForGuess();
+
+      if (gameEnded) {
+        break;
+      }
     }
   }
 }
