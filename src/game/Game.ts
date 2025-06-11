@@ -111,4 +111,60 @@ export class Game {
       process.exit(1);
     }
   }
+
+  private async askForGuess(): Promise<boolean> {
+    const guessInput = await this.rl.question('Enter your guess: ');
+    const guess = parseInt(guessInput);
+    this.state.attempts++;
+
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+      console.log(
+        chalk.red('Please enter a valid number between 1 and 100.\n'),
+      );
+
+      return false;
+    }
+
+    if (guess === this.state.secretNumber) {
+      console.log(
+        `\n🎉 Congratulations! You guessed the number in ${this.state.attempts} attempt(s).`,
+      );
+
+      this.endGame(true);
+      return true;
+    } else {
+      console.log(
+        `Incorrect! The number is ${
+          guess < this.state.secretNumber ? 'greater than' : 'less than'
+        } ${guess}`,
+      );
+
+      const remainingChances = this.state.maxChances - this.state.attempts;
+      console.log(`You have ${remainingChances} attempt(s) left.\n`);
+
+      if (remainingChances === 0) {
+        console.log(
+          chalk.red(
+            `\n😢 Game Over! You ran out of chances. The secret number was ${this.state.secretNumber}`,
+          ),
+        );
+
+        this.endGame(false);
+        return true;
+      } else if (
+        remainingChances <= this.state.hintThreshold &&
+        this.state.attempts > 1
+      ) {
+        const answer = await this.rl.question(
+          'Would you like a hint? (yes/no): ',
+        );
+
+        if (answer.toLowerCase() === 'yes') {
+          this.provideHint();
+        }
+      }
+
+      return false;
+    }
+  }
 }
