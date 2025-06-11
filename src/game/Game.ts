@@ -81,4 +81,34 @@ export class Game {
 
     return config;
   }
+
+  private provideHint(): void {
+    console.log(chalk.bgGreen('\n--- Hint Time! ---'));
+
+    if (this.state.secretNumber % 2 === 0) {
+      console.log('Hint: The number is an even number.');
+    } else {
+      console.log('Hint: The number is an odd number.');
+    }
+
+    if (this.state.secretNumber > 50) {
+      console.log('Hint: The number is in the upper half (51-100).');
+    } else {
+      console.log('Hint: The number is in the lower half (1-50).');
+    }
+
+    console.log(chalk.green('------------------\n'));
+  }
+
+  private endGame(won: boolean): void {
+    this.rl.close();
+
+    console.log(chalk.blueBright('\nThanks for playing!'));
+
+    if (won) {
+      process.exit(0);
+    } else {
+      process.exit(1);
+    }
+  }
 }
