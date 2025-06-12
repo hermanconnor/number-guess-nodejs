@@ -20,7 +20,7 @@ export class Game {
   }
 
   private displayWelcomeMessage(): void {
-    console.log(chalk.blueBright('Welcome to the Number Guessing Game!\n'));
+    console.log(chalk.blueBright('🎉 Welcome to the Number Guessing Game!\n'));
     console.log("I'm thinking of a number between 1 and 100.");
     console.log(
       'You have a limited number of chances to guess the correct number.',
@@ -116,7 +116,7 @@ export class Game {
   }
 
   private async askForGuess(): Promise<boolean> {
-    const guessInput = await this.rl.question('Enter your guess: ');
+    const guessInput = await this.rl.question('👉 Enter your guess: ');
     const guess = parseInt(guessInput);
     this.state.attempts++;
 
@@ -139,7 +139,7 @@ export class Game {
       return true;
     } else {
       console.log(
-        `Incorrect! The number is ${
+        `❌ Incorrect! The number is ${
           guess < this.state.secretNumber ? 'greater than' : 'less than'
         } ${guess}`,
       );
