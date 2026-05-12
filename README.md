@@ -26,7 +26,7 @@ The computer will pick a random number between 1 and 100. Your goal is to guess 
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/number-guess-nodejs.git
+git clone https://github.com/hermanconnor/number-guess-nodejs.git
 cd number-guess-nodejs
 ```
 
